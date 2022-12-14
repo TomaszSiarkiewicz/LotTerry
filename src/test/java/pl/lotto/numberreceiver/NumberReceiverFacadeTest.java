@@ -24,17 +24,17 @@ public class NumberReceiverFacadeTest {
 
         assert result.message().equals("failed");
     }
-//
-//    @Test
-//    public void should_return_failed_result_when_user_gave_more_than_six_numbers() {
-//
-//    }
-//
-//    @Test
-//    public void should_return_failed_result_when_user_gave_atleast_one_duplicate() {
-//
-//    }
-//
+
+    @Test
+    public void should_return_failed_result_when_user_gave_more_than_six_numbers() {
+
+    }
+
+    @Test
+    public void should_return_failed_result_when_user_gave_atleast_one_duplicate() {
+
+    }
+
 //    @Test
 //    public void should_return_next_saturday_as_draw_date_when_user_played_on_friday() {
 //
