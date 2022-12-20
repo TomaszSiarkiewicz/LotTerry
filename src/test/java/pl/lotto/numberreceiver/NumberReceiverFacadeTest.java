@@ -27,12 +27,31 @@ public class NumberReceiverFacadeTest {
 
     @Test
     public void should_return_failed_result_when_user_gave_more_than_six_numbers() {
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
+        List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6, 7);
 
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+
+        assert result.message().equals("failed");
     }
 
     @Test
-    public void should_return_failed_result_when_user_gave_atleast_one_duplicate() {
+    public void should_return_failed_result_when_user_gave_at_least_one_duplicate() {
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
+        List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 5);
 
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+
+        assert result.message().equals("failed");
+    }
+    @Test
+    public void should_return_failed_result_when_user_gave_number_out_of_bound() {
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacade();
+        List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 0);
+
+        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+
+        assert result.message().equals("failed");
     }
 
 //    @Test
