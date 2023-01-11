@@ -11,6 +11,7 @@ class NumberReceiverFacade {
 
     private final NextDrawDateCalculator drawDateCalculator;
     private final NumberValidator numberValidator;
+    private final LotteryIdGenerable lotteryIdGenerator;
 
     NumberReceiverFacade(NextDrawDateCalculator drawDateCalculator) {
         this.drawDateCalculator = drawDateCalculator;

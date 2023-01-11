@@ -2,7 +2,7 @@ package pl.lotto.numberreceiver;
 
 import java.time.LocalDateTime;
 
-record NumberReceiverResultDto(
+public record TicketDto(
         String message,
         String lotteryId,
         LocalDateTime drawDate

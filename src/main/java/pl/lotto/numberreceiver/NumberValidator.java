@@ -18,14 +18,14 @@ class NumberValidator {
         List<Integer> result = numbersFromUser.stream()
                 .filter(givenNumber -> givenNumber <= MAX_NUMBER && givenNumber >= MIN_NUMBER)
                 .toList();
-        return result.size() != 6;
+        return result.size() != MAX_NUMBERS_FROM_USER;
     }
 
     private boolean isNumbersFromUserDuplicate(List<Integer> numbersFromUser) {
         List<Integer> result = numbersFromUser.stream()
                 .distinct()
                 .toList();
-        return result.size() != 6;
+        return result.size() != MAX_NUMBERS_FROM_USER;
     }
 
     private boolean isSixNumbersFromUser(List<Integer> numbersFromUser) {
