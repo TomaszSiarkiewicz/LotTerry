@@ -6,6 +6,7 @@ public class NumberReceiverFacadeConfiguration {
 
     NumberReceiverFacade createForTests(Clock clock, LotteryIdGenerable lotteryIdGenerator) {
         NextDrawDateCalculator nextDrawDateCalculator = new NextDrawDateCalculator(clock);
-        return new NumberReceiverFacade(nextDrawDateCalculator);
+        NumberValidator numberValidator = new NumberValidator();
+        return new NumberReceiverFacade(nextDrawDateCalculator, numberValidator, lotteryIdGenerator);
     }
 }

@@ -13,18 +13,26 @@ class NumberReceiverFacade {
     private final NumberValidator numberValidator;
     private final LotteryIdGenerable lotteryIdGenerator;
 
-    NumberReceiverFacade(NextDrawDateCalculator drawDateCalculator) {
+    NumberReceiverFacade(NextDrawDateCalculator drawDateCalculator, NumberValidator numberValidator, LotteryIdGenerable lotteryIdGenerator) {
         this.drawDateCalculator = drawDateCalculator;
-        this.numberValidator = new NumberValidator();
+        this.numberValidator = numberValidator;
+        this.lotteryIdGenerator = lotteryIdGenerator;
     }
 
-    NumberReceiverResultDto inputNumbers(List<Integer> numbersFromUser) {
+    TicketDto inputNumbers(List<Integer> numbersFromUser) {
         if (numberValidator.validate(numbersFromUser)) {
             LocalDateTime nextSaturday = drawDateCalculator.calculateNextDrawDate();
-            return new NumberReceiverResultDto(CORRECT_RESULT_MESSAGE, UUID.randomUUID().toString(), nextSaturday);
+            return new TicketDto(CORRECT_RESULT_MESSAGE, UUID.randomUUID().toString(), nextSaturday);
         } else {
-            return new NumberReceiverResultDto(FAILED_RESULT_MESSAGE, null, LocalDateTime.now());
+            return new TicketDto(FAILED_RESULT_MESSAGE, null, LocalDateTime.now());
         }
+    }
+
+    AllTicketsDto retriveAllUserTicketsForNextDrawDate() {
+        LocalDateTime nextDrawDate = LocalDateTime.of(2023, 1, 14, 12, 0, 0);
+        String lotteryId = lotteryIdGenerator.generateId();
+        List<TicketDto> tickets = List.of(new TicketDto("correct", lotteryId, nextDrawDate));
+        return new AllTicketsDto(tickets);
     }
 
 }

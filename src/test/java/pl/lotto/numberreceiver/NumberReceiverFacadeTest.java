@@ -19,7 +19,7 @@ public class NumberReceiverFacadeTest {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         //when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
         assertThat(result.message()).isEqualTo("correct");
@@ -86,7 +86,7 @@ public class NumberReceiverFacadeTest {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
         LocalDateTime expectedDrawDate = LocalDateTime.of(2023, 1, 14, 12, 0, 0);
@@ -102,7 +102,7 @@ public class NumberReceiverFacadeTest {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
         LocalDateTime expectedDrawDate = LocalDateTime.of(2023, 1, 7, 12, 0, 0);
@@ -116,7 +116,7 @@ public class NumberReceiverFacadeTest {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
         assertThat(result.lotteryId()).isNotNull();
@@ -131,9 +131,26 @@ public class NumberReceiverFacadeTest {
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5);
 
         // when
-        NumberReceiverResultDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
+        TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         // then
         assertThat(result.lotteryId()).isNull();
+    }
+
+    @Test
+    public void should_return_all_tickets_for_next_draw_date() {
+        // given
+        LocalDateTime date = LocalDateTime.of(2022, 12, 31, 12, 0, 0);
+        Clock clock = Clock.fixed(date.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+        LotteryIdGeneratorTestImpl lotteryIdGeneratorTest = new LotteryIdGeneratorTestImpl("id1");
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, lotteryIdGeneratorTest);
+
+        // when
+        AllTicketsDto result = numberReceiverFacade.retriveAllUserTicketsForNextDrawDate();
+
+        // then
+        LocalDateTime nextDrawDate = LocalDateTime.of(2023, 1, 14, 12, 0, 0);
+        TicketDto correct = new TicketDto("correct", "id1", nextDrawDate);
+        assertThat(result.tickets().get(0)).isEqualTo(correct);
     }
 }
