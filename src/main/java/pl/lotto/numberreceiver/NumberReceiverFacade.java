@@ -6,9 +6,6 @@ import java.util.UUID;
 
 class NumberReceiverFacade {
 
-    private final String CORRECT_RESULT_MESSAGE = "correct";
-    private final String FAILED_RESULT_MESSAGE = "failed";
-
     private final NextDrawDateCalculator drawDateCalculator;
     private final NumberValidator numberValidator;
     private final LotteryIdGenerable lotteryIdGenerator;
@@ -22,9 +19,9 @@ class NumberReceiverFacade {
     TicketDto inputNumbers(List<Integer> numbersFromUser) {
         if (numberValidator.validate(numbersFromUser)) {
             LocalDateTime nextSaturday = drawDateCalculator.calculateNextDrawDate();
-            return new TicketDto(CORRECT_RESULT_MESSAGE, UUID.randomUUID().toString(), nextSaturday);
+            return new TicketDto(numberValidator.getMessage(), UUID.randomUUID().toString(), nextSaturday);
         } else {
-            return new TicketDto(FAILED_RESULT_MESSAGE, null, LocalDateTime.now());
+            return new TicketDto(numberValidator.getMessage(), null, LocalDateTime.now());
         }
     }
 
