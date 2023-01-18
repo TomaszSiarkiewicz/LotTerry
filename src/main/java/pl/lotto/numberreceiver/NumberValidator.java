@@ -1,39 +1,39 @@
 package pl.lotto.numberreceiver;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static pl.lotto.numberreceiver.Constants.*;
+import static pl.lotto.numberreceiver.ValidationMessage.*;
 
 class NumberValidator {
-    ValidationConstants constants = new ValidationConstants();
-    private String message = "";
-    private boolean isValid = true;
+    List<ValidationMessage> errorList = new ArrayList<>();
 
     public NumberValidator() {
     }
 
-    public boolean validate(List<Integer> numbersFromUser) {
+    public ValidationResult validate(List<Integer> numbersFromUser) {
+
         isNumbersFromUserInBound(numbersFromUser);
         isNumbersFromUserDistinctive(numbersFromUser);
         isNotLessThanSixNumbersFromUser(numbersFromUser);
         isNotMoreThanSixNumbersFromUser(numbersFromUser);
 
-        if (isValid) {
-            message = constants.getCORRECT_MESSAGE();
-            return true;
+        if (errorList.isEmpty()) {
+            return new ValidationResult(true, CORRECT_MESSAGE.getMessage());
         } else {
-            message = "Failed! Fix those issues: \n" + message;
-            return false;
+            return new ValidationResult(false, joinMessages());
         }
     }
 
     private void isNumbersFromUserInBound(List<Integer> numbersFromUser) {
         List<Integer> result = numbersFromUser.stream()
-                .filter(givenNumber -> givenNumber > constants.getMAX_NUMBER() || givenNumber < constants.getMIN_NUMBER())
+                .filter(userNumber -> userNumber > MAX_NUMBER || userNumber < MIN_NUMBER)
                 .toList();
-        boolean isCorrect = result.size() == 0;
-        if (!isCorrect) {
-            message = message.concat(constants.getNUMBERS_OUT_OF_BOUND_MESSAGE());
-            isValid = false;
+        if (!result.isEmpty()) {
+            errorList.add(NUMBERS_OUT_OF_BOUND_MESSAGE);
         }
     }
 
@@ -41,30 +41,28 @@ class NumberValidator {
         List<Integer> result = numbersFromUser.stream()
                 .filter(i -> Collections.frequency(numbersFromUser, i) > 1)
                 .toList();
-        boolean isCorrect = result.size() == 0;
-        if (!isCorrect) {
-            message = message.concat(constants.getDUPLICATED_NUMBERS_MESSAGE());
-            isValid = false;
+        if (!result.isEmpty()) {
+            errorList.add(DUPLICATED_NUMBERS_MESSAGE);
         }
     }
 
     private void isNotLessThanSixNumbersFromUser(List<Integer> numbersFromUser) {
-        boolean isCorrect = !(numbersFromUser.size() < constants.getMAX_NUMBERS_FROM_USER());
+        boolean isCorrect = !(numbersFromUser.size() < MAX_NUMBERS_FROM_USER);
         if (!isCorrect) {
-            message = message.concat(constants.getNOT_ENOUGH_NUMBERS_MESSAGE());
-            isValid = false;
+            errorList.add(NOT_ENOUGH_NUMBERS_MESSAGE);
         }
     }
 
     private void isNotMoreThanSixNumbersFromUser(List<Integer> numbersFromUser) {
-        boolean isCorrect = !(numbersFromUser.size() > constants.getMAX_NUMBERS_FROM_USER());
+        boolean isCorrect = !(numbersFromUser.size() > MAX_NUMBERS_FROM_USER);
         if (!isCorrect) {
-            message = message.concat(constants.getTOO_MANY_NUMBERS_MESSAGE());
-            isValid = false;
+            errorList.add(TOO_MANY_NUMBERS_MESSAGE);
         }
     }
 
-    public String getMessage() {
+    private String joinMessages() {
+        String message = "Failed! Fix those issues: ";
+        message += errorList.stream().map(ValidationMessage::getMessage).collect(Collectors.joining(","));
         return message;
     }
 }

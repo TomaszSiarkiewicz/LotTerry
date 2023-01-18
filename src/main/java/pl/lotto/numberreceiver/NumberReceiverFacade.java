@@ -17,11 +17,12 @@ class NumberReceiverFacade {
     }
 
     TicketDto inputNumbers(List<Integer> numbersFromUser) {
-        if (numberValidator.validate(numbersFromUser)) {
+        ValidationResult validationResult = numberValidator.validate(numbersFromUser);
+        if (validationResult.isValid()) {
             LocalDateTime nextSaturday = drawDateCalculator.calculateNextDrawDate();
-            return new TicketDto(numberValidator.getMessage(), UUID.randomUUID().toString(), nextSaturday);
+            return new TicketDto(validationResult.message(), UUID.randomUUID().toString(), nextSaturday);
         } else {
-            return new TicketDto(numberValidator.getMessage(), null, LocalDateTime.now());
+            return new TicketDto(validationResult.message(), null, LocalDateTime.now());
         }
     }
 

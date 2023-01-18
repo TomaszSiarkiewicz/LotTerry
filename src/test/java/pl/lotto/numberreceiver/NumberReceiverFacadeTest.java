@@ -35,7 +35,7 @@ public class NumberReceiverFacadeTest {
         TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
-        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nNot enough numbers\n");
+        assertThat(result.message()).isEqualTo("Failed! Fix those issues: Not enough numbers");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class NumberReceiverFacadeTest {
         TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
-        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nToo many numbers\n");
+        assertThat(result.message()).isEqualTo("Failed! Fix those issues: Too many numbers");
     }
 
     @Test
@@ -61,7 +61,7 @@ public class NumberReceiverFacadeTest {
         TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
-        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nNumbers are duplicated\n");
+        assertThat(result.message()).isEqualTo("Failed! Fix those issues: Numbers are duplicated");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class NumberReceiverFacadeTest {
         TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
-        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nAt least one number is incorrect\n");
+        assertThat(result.message()).isEqualTo("Failed! Fix those issues: At least one number is incorrect");
     }
 
     @Test
