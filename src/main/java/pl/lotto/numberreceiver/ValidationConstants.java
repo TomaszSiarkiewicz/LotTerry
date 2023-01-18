@@ -5,10 +5,10 @@ class ValidationConstants {
     private final int MAX_NUMBER = 99;
     private final int MIN_NUMBER = 1;
     private final String CORRECT_MESSAGE = "Success!";
-    private final String NUMBERS_OUT_OF_BOUND_MESSAGE = "At least one number is incorrect \n";
-    private final String NOT_ENOUGH_NUMBERS_MESSAGE = "Not enough numbers \n";
-    private final String TOO_MANY_NUMBERS_MESSAGE = "Too many numbers \n";
-    private final String DUPLICATED_NUMBERS_MESSAGE = "Numbers are duplicated \n";
+    private final String NUMBERS_OUT_OF_BOUND_MESSAGE = "At least one number is incorrect\n";
+    private final String NOT_ENOUGH_NUMBERS_MESSAGE = "Not enough numbers\n";
+    private final String TOO_MANY_NUMBERS_MESSAGE = "Too many numbers\n";
+    private final String DUPLICATED_NUMBERS_MESSAGE = "Numbers are duplicated\n";
 
     public ValidationConstants() {
     }
