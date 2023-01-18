@@ -74,7 +74,7 @@ public class NumberReceiverFacadeTest {
         TicketDto result = numberReceiverFacade.inputNumbers(numbersFromUser);
 
         //then
-        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nAt least one number is incorrect \n");
+        assertThat(result.message()).isEqualTo("Failed! Fix those issues: \nAt least one number is incorrect\n");
     }
 
     @Test
