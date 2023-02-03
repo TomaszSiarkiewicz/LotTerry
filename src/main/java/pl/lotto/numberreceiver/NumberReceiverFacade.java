@@ -33,7 +33,7 @@ class NumberReceiverFacade {
         }
     }
 
-    List<TicketDto> retriveAllUserTicketsForNextDrawDate() {
+    List<TicketDto> retrieveAllUserTicketsForNextDrawDate() {
         LocalDateTime nextDrawDate = drawDateCalculator.calculateNextDrawDate();
         List<Ticket> tickets = repository.findAllByDrawDate(nextDrawDate);
         return tickets.stream()

@@ -17,10 +17,10 @@ public class InMemoryTicketDtoDatabaseRepositoryImplementation implements Ticket
     }
 
     @Override
-    public List<Ticket> findAllByDrawDate(LocalDateTime nextDrawDate) {
+    public List<Ticket> findAllByDrawDate(LocalDateTime drawDate) {
         return ticketsDtoDatabase.values()
                 .stream()
-                .filter(ticket -> ticket.drawDate().equals(nextDrawDate))
+                .filter(ticket -> ticket.drawDate().equals(drawDate))
                 .collect(Collectors.toList());
 
     }

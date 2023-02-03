@@ -1,4 +1,4 @@
-package pl.lotto.numberreceiver;
+package pl.lotto;
 
 import java.time.*;
 
@@ -71,6 +71,11 @@ public class AdjustableClock extends Clock {
         advanceInTimeBy(offset);
     }
 
+    public void minusDays(int days) {
+        Duration offset = Duration.ofDays(-days);
+        advanceInTimeBy(offset);
+    }
+
     public void setClockToLocalDateTime(LocalDateTime localDateTime) {
         ZonedDateTime zoneDateTime = createZoneDateTime(localDateTime.toLocalDate(), localDateTime.toLocalTime(), zone);
         this.instant = zoneDateTime.toInstant();
@@ -84,5 +89,9 @@ public class AdjustableClock extends Clock {
     public void setClockToLocalTime(LocalTime localTime) {
         LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(this), localTime);
         setClockToLocalDateTime(localDateTime);
+    }
+
+    public LocalDate getLocalDate() {
+        return LocalDate.ofInstant(instant, ZoneId.systemDefault());
     }
 }
