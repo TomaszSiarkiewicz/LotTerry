@@ -1,11 +1,12 @@
 package pl.lotto.numberreceiver;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-class NumberReceiverFacade {
+public class NumberReceiverFacade {
 
     private final TicketDtoRepository repository;
 
@@ -41,4 +42,7 @@ class NumberReceiverFacade {
                 .collect(Collectors.toList());
     }
 
+    public LocalDate getNextDrawingDate() {
+        return LocalDate.from(drawDateCalculator.calculateNextDrawDate());
+    }
 }

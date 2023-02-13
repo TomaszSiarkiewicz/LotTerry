@@ -4,7 +4,7 @@ public class LotteryIdGeneratorTestImpl implements LotteryIdGenerable {
 
     String id;
 
-    LotteryIdGeneratorTestImpl(String id) {
+    public LotteryIdGeneratorTestImpl(String id) {
         this.id = id;
     }
 
