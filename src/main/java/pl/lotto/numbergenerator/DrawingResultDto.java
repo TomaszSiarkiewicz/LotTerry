@@ -1,10 +1,10 @@
 package pl.lotto.numbergenerator;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public record DrawingResultDto(
-        LocalDate date,
-        Set<Integer> numbers
+        LocalDateTime date,
+        List<Integer> numbers
 ) {
 }

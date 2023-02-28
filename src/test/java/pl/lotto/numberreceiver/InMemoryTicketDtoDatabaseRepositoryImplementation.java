@@ -4,11 +4,12 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 public class InMemoryTicketDtoDatabaseRepositoryImplementation implements TicketDtoRepository {
-    private Map<String, Ticket> ticketsDtoDatabase = new HashMap<>();
+    private final Map<String, Ticket> ticketsDtoDatabase = new HashMap<>();
 
     @Override
     public Ticket save(Ticket ticket) {
@@ -23,5 +24,10 @@ public class InMemoryTicketDtoDatabaseRepositoryImplementation implements Ticket
                 .filter(ticket -> ticket.drawDate().equals(drawDate))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public Optional<Ticket> findById(String id) {
+        return Optional.of(ticketsDtoDatabase.get(id));
     }
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -152,10 +153,10 @@ public class NumberReceiverFacadeTest {
 
         TicketDto ticket = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6)).ticketDto();
         // when
-        List<TicketDto> allTickets = numberReceiverFacade.retrieveAllUserTicketsForNextDrawDate();
+        Optional<List<TicketDto>> allTickets = numberReceiverFacade.retrieveAllUserTicketsForNextDrawDate();
 
         //then
-        assertThat(allTickets).containsOnly(ticket);
+        assertThat(allTickets.get()).containsOnly(ticket);
     }
 
     @Test
@@ -170,9 +171,9 @@ public class NumberReceiverFacadeTest {
         clock.plusDays(30);
         TicketDto ticket1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6)).ticketDto();
         // when
-        List<TicketDto> allTickets = numberReceiverFacade.retrieveAllUserTicketsForNextDrawDate();
+        Optional<List<TicketDto>>allTickets = numberReceiverFacade.retrieveAllUserTicketsForNextDrawDate();
 
         //then
-        assertThat(allTickets).containsOnly(ticket1);
+        assertThat(allTickets.get()).containsOnly(ticket1);
     }
 }

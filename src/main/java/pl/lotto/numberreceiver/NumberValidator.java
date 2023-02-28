@@ -9,7 +9,7 @@ import static pl.lotto.numberreceiver.Constants.*;
 import static pl.lotto.numberreceiver.ValidationMessage.*;
 
 class NumberValidator {
-    List<ValidationMessage> errorList = new ArrayList<>();
+    private final List<ValidationMessage> errorList = new ArrayList<>();
 
     public NumberValidator() {
     }

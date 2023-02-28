@@ -1,15 +1,14 @@
 package pl.lotto.numberreceiver;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NumberReceiverFacade {
 
     private final TicketDtoRepository repository;
-
     private final NextDrawDateCalculator drawDateCalculator;
     private final NumberValidator numberValidator;
     private final LotteryIdGenerable lotteryIdGenerator;
@@ -34,15 +33,24 @@ public class NumberReceiverFacade {
         }
     }
 
-    List<TicketDto> retrieveAllUserTicketsForNextDrawDate() {
+    Optional<List<TicketDto>> retrieveAllUserTicketsForNextDrawDate() {
         LocalDateTime nextDrawDate = drawDateCalculator.calculateNextDrawDate();
         List<Ticket> tickets = repository.findAllByDrawDate(nextDrawDate);
-        return tickets.stream()
+        if (tickets.isEmpty()) return Optional.empty();
+        return Optional.of(tickets.stream()
                 .map(ticket -> new TicketDto(ticket.lotteryId(), ticket.drawDate()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+
     }
 
-    public LocalDate getNextDrawingDate() {
-        return LocalDate.from(drawDateCalculator.calculateNextDrawDate());
+    public LocalDateTime getNextDrawingDate() {
+        return drawDateCalculator.calculateNextDrawDate();
+    }
+
+    public Optional<List<Ticket>> getPlayedTicketDtoForGivenDate(LocalDateTime date) {
+        List<Ticket> tickets = repository.findAllByDrawDate(date);
+        if (tickets.isEmpty()) return Optional.empty();
+        return Optional.of(repository.findAllByDrawDate(date));
     }
 }

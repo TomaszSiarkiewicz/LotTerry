@@ -7,7 +7,6 @@ import pl.lotto.numberreceiver.LotteryIdGeneratorTestImpl;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacadeConfiguration;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -23,7 +22,7 @@ public class NumberGeneratorFacadeTest {
     @Test
     public void should_return_six_distinct_number_in_range_of_1_99() {
         //given
-        LocalDate drawingDate = LocalDate.of(2023, 3, 22);
+        LocalDateTime drawingDate = LocalDateTime.of(2023, 3, 22, 12, 0);
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
@@ -38,7 +37,7 @@ public class NumberGeneratorFacadeTest {
     @Test
     public void should_save_numbers_for_current_draw_date() {
         //given
-        LocalDate drawingDate = LocalDate.of(2023, 3, 22);
+        LocalDateTime drawingDate = LocalDateTime.of(2023, 3, 22, 12, 0);
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
@@ -73,10 +72,10 @@ public class NumberGeneratorFacadeTest {
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
         NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().createForTests(winningNumbersRepository, numberReceiverFacade);
         //when
-        LocalDate firstDrawingDate = numberReceiverFacade.getNextDrawingDate();
+        LocalDateTime firstDrawingDate = numberReceiverFacade.getNextDrawingDate();
         DrawingResultDto twoWeeksBackDrawingResult = numberGeneratorFacade.generateNumbersAndSave();
         clock.plusDays(7);
-        LocalDate secondDrawingDate = numberReceiverFacade.getNextDrawingDate();
+        LocalDateTime secondDrawingDate = numberReceiverFacade.getNextDrawingDate();
         DrawingResultDto oneWeeksBackDrawingResult = numberGeneratorFacade.generateNumbersAndSave();
         //then
         assertThat(oneWeeksBackDrawingResult).isEqualTo(numberGeneratorFacade.retrieveNumbersByDate(secondDrawingDate));

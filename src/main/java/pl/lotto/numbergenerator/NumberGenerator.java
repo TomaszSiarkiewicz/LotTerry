@@ -5,13 +5,13 @@ import java.util.Random;
 import java.util.Set;
 
 class NumberGenerator {
-    Random random;
+    private final Random random;
 
     public NumberGenerator() {
         random = new Random();
     }
 
-    public Set<Integer> generate() {
+     Set<Integer> generate() {
         Set<Integer> drawnNumbers = new HashSet<>();
         while (drawnNumbers.size() < 6) {
             drawnNumbers.add(random.nextInt(99) + 1);
