@@ -20,7 +20,7 @@ class WinnerChecker {
 
     private TicketResult checkNumbers(Ticket ticket, DrawingResultDto drawingResultDto) {
         List<Integer> matchingNumbers = drawingResultDto.numbers().stream().filter(ticket.numbers()::contains).toList();
-            return mapToLottoResult(ticket, drawingResultDto, isWinner(matchingNumbers));
+        return mapToLottoResult(ticket, drawingResultDto, isWinner(matchingNumbers));
 
     }
 

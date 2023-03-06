@@ -1,10 +1,13 @@
 package pl.lotto.numbergenerator;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 
+@Configuration
 public class NumberGeneratorFacadeConfiguration {
-
-    public NumberGeneratorFacade createForTests(WinningNumbersRepository repository, NumberReceiverFacade numberReceiverFacade) {
+    @Bean
+    public NumberGeneratorFacade numberGeneratorFacade(WinningNumbersRepository repository, NumberReceiverFacade numberReceiverFacade) {
         return new NumberGeneratorFacade(repository, numberReceiverFacade);
     }
 }

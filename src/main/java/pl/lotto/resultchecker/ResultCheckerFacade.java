@@ -7,7 +7,7 @@ import pl.lotto.numberreceiver.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 public class ResultCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
@@ -24,17 +24,21 @@ public class ResultCheckerFacade {
     }
 
     public List<TicketResult> getWinnersByDate(LocalDateTime date) {
-        return ticketResultRepository.findWinnersByDate(date);
-  }
-    public PlayerResultDto getWinnerByTicketId(String id){
-        TicketResult ticketbyId = ticketResultRepository.findTicketbyId(id);
+        return ticketResultRepository.findWinnersByDrawDate(date);
+    }
+
+    public PlayerResultDto getWinnerByTicketId(String id) {
+        TicketResult ticketbyId = ticketResultRepository.findTicketByTicketId(id);
         return new PlayerResultDto(ticketbyId.userNumbers(), ticketbyId.drawDate(), ticketbyId.isWinner());
     }
-    public void calculateWinners(LocalDateTime date){
+
+    public void calculateWinners(LocalDateTime date) {
         DrawingResultDto drawingResultDto = numberGeneratorFacade.retrieveNumbersByDate(date);
-        Optional<List<Ticket>> ticketPlayed = numberReceiverFacade.getPlayedTicketDtoForGivenDate(date);
-        ticketPlayed.ifPresent(tickets -> {
-            ticketResultRepository.save(winnerChecker.getResults(drawingResultDto, ticketPlayed.get()));
-        });
+        List<Ticket> ticketPlayed = numberReceiverFacade.getPlayedTicketDtoForGivenDate(date);
+        List<TicketResult> results = winnerChecker.getResults(drawingResultDto, ticketPlayed);
+        if (!results.isEmpty()) {
+            ticketResultRepository.saveAll(results);
+        }
     }
 }
+

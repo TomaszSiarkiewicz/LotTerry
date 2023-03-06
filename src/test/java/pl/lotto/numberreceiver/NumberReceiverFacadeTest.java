@@ -21,7 +21,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_correct_result_when_user_gave_six_numbers_in_range_of_1_and_99() {
         //given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         //when
@@ -34,7 +34,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_failed_result_when_user_gave_less_than_six_numbers() {
         //given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5);
 
         //when
@@ -47,7 +47,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_failed_result_when_user_gave_more_than_six_numbers() {
         //given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6, 7);
 
         //when
@@ -60,7 +60,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_failed_result_when_user_gave_duplicated_numbers() {
         //given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 5);
 
         //when
@@ -73,7 +73,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_failed_result_when_user_gave_number_out_of_bound_1_99() {
         //given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 0);
 
         //when
@@ -88,7 +88,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime date = LocalDateTime.of(2023, 1, 11, 11, 23, 0);
         Clock clock = Clock.fixed(date.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
@@ -104,7 +104,7 @@ public class NumberReceiverFacadeTest {
         // given
         LocalDateTime date = LocalDateTime.of(2022, 12, 31, 12, 0, 0);
         Clock clock = Clock.fixed(date.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
@@ -118,7 +118,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_lottery_id_when_all_good() {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5, 6);
 
         // when
@@ -133,7 +133,7 @@ public class NumberReceiverFacadeTest {
     @Test
     public void should_return_null_lottery_id_when_something_went_wrong() {
         // given
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(Clock.systemUTC(), lotteryIdGenerable, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(Clock.systemUTC(), lotteryIdGenerable, repository);
         List<Integer> numbersFromUser = List.of(1, 2, 3, 4, 5);
 
         // when
@@ -149,7 +149,7 @@ public class NumberReceiverFacadeTest {
         LocalDateTime date = LocalDateTime.of(2022, 12, 31, 12, 0, 0);
         Clock clock = Clock.fixed(date.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
         LotteryIdGeneratorTestImpl lotteryIdGeneratorTest = new LotteryIdGeneratorTestImpl("id1");
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, lotteryIdGeneratorTest, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, lotteryIdGeneratorTest, repository);
 
         TicketDto ticket = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6)).ticketDto();
         // when
@@ -166,7 +166,7 @@ public class NumberReceiverFacadeTest {
 
         LocalDateTime date = LocalDateTime.of(2022, 12, 1, 12, 0, 0);
         AdjustableClock clock = new AdjustableClock(date.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, lotteryIdGeneratorTest, repository);
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, lotteryIdGeneratorTest, repository);
         TicketDto ticket = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6)).ticketDto();
         clock.plusDays(30);
         TicketDto ticket1 = numberReceiverFacade.inputNumbers(List.of(1, 2, 3, 4, 5, 6)).ticketDto();

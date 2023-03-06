@@ -15,7 +15,7 @@ class NumberValidator {
     }
 
     public ValidationResult validate(List<Integer> numbersFromUser) {
-
+        errorList.clear();
         isNumbersFromUserInBound(numbersFromUser);
         isNumbersFromUserDistinctive(numbersFromUser);
         isNotLessThanSixNumbersFromUser(numbersFromUser);

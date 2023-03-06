@@ -1,11 +1,12 @@
 package pl.lotto.numberreceiver;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 public class NumberReceiverFacade {
 
     private final TicketDtoRepository repository;
@@ -20,7 +21,7 @@ public class NumberReceiverFacade {
         this.repository = repository;
     }
 
-    InputNumbersResponse inputNumbers(List<Integer> numbersFromUser) {
+    public InputNumbersResponse inputNumbers(List<Integer> numbersFromUser) {
         ValidationResult validationResult = numberValidator.validate(numbersFromUser);
         if (validationResult.isValid()) {
             LocalDateTime nextSaturday = drawDateCalculator.calculateNextDrawDate();
@@ -48,9 +49,7 @@ public class NumberReceiverFacade {
         return drawDateCalculator.calculateNextDrawDate();
     }
 
-    public Optional<List<Ticket>> getPlayedTicketDtoForGivenDate(LocalDateTime date) {
-        List<Ticket> tickets = repository.findAllByDrawDate(date);
-        if (tickets.isEmpty()) return Optional.empty();
-        return Optional.of(repository.findAllByDrawDate(date));
+    public List<Ticket> getPlayedTicketDtoForGivenDate(LocalDateTime date) {
+        return repository.findAllByDrawDate(date);
     }
 }

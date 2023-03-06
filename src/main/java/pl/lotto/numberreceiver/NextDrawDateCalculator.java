@@ -17,6 +17,8 @@ class NextDrawDateCalculator {
         LocalDateTime now = LocalDateTime.now(clock);
         return now.with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
                 .withHour(12)
-                .withMinute(0);
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
     }
 }

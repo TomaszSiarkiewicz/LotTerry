@@ -1,10 +1,10 @@
 package pl.lotto.numbergenerator;
 
+import org.springframework.stereotype.Component;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 public class NumberGeneratorFacade {
     private final NumberGenerator numberGenerator;
     private final WinningNumbersRepository repository;
@@ -19,8 +19,9 @@ public class NumberGeneratorFacade {
     public DrawingResultDto generateNumbersAndSave() {
 
         List<Integer> numbers = numberGenerator.generate().stream().toList();
-        WinningNumbers winningNumbers = repository.save(new WinningNumbers(numberReceiverFacade.getNextDrawingDate(), numbers));
-        return new DrawingResultDto(winningNumbers.date(), winningNumbers.numbers());
+        WinningNumbers winningNumbers = WinningNumbers.builder().numbers(numbers).date(numberReceiverFacade.getNextDrawingDate()).build();
+        WinningNumbers saved = repository.save(winningNumbers);
+        return new DrawingResultDto(saved.date(), saved.numbers());
     }
 
     public DrawingResultDto retrieveNumbersByDate(LocalDateTime date) {

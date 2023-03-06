@@ -26,7 +26,7 @@ public class NumberGeneratorFacadeTest {
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().createForTests(winningNumbersRepository, numberReceiverFacade);
+        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         DrawingResultDto drawingResult = numberGeneratorFacade.generateNumbersAndSave();
         //then
@@ -41,7 +41,7 @@ public class NumberGeneratorFacadeTest {
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().createForTests(winningNumbersRepository, numberReceiverFacade);
+        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         DrawingResultDto drawingResult = numberGeneratorFacade.generateNumbersAndSave();
         //then
@@ -54,9 +54,9 @@ public class NumberGeneratorFacadeTest {
     public void should_return_null_saving_drawing_result_when_drawn_number_in_database_for_given_day() {
         //given
         AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 1, 1, 12, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().createForTests(winningNumbersRepository, numberReceiverFacade);
+        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         DrawingResultDto firstDrawingResult = numberGeneratorFacade.generateNumbersAndSave();
         DrawingResultDto secondDrawingSameDay = numberGeneratorFacade.generateNumbersAndSave();
@@ -68,9 +68,9 @@ public class NumberGeneratorFacadeTest {
     public void should_return_one_drawing_result_for_given_saturday() {
         //given
         AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 1, 1, 12, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
+        NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
         WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().createForTests(winningNumbersRepository, numberReceiverFacade);
+        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         LocalDateTime firstDrawingDate = numberReceiverFacade.getNextDrawingDate();
         DrawingResultDto twoWeeksBackDrawingResult = numberGeneratorFacade.generateNumbersAndSave();
