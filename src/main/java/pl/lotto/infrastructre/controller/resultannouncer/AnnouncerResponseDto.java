@@ -1,4 +1,4 @@
-package pl.lotto;
+package pl.lotto.infrastructre.controller.resultannouncer;
 
 import pl.lotto.resultchecker.PlayerResultDto;
 

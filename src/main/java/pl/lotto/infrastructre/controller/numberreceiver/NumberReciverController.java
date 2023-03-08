@@ -1,4 +1,4 @@
-package pl.lotto;
+package pl.lotto.infrastructre.controller.numberreceiver;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

@@ -9,7 +9,7 @@ import pl.lotto.resultannouncer.ResultAnnouncerFacade;
 @Configuration
 public class ResultCheckerConfiguration {
     @Bean
-    public ResultCheckerFacade resultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade, TicketResultRepository ticketResultRepository, ResultAnnouncerFacade resultAnnouncerFacade){
-        return new ResultCheckerFacade(numberReceiverFacade, numberGeneratorFacade, new WinnerChecker(), ticketResultRepository, resultAnnouncerFacade);
+    public ResultCheckerFacade resultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade, TicketResultRepository ticketResultRepository){
+        return new ResultCheckerFacade(numberReceiverFacade, numberGeneratorFacade, new WinnerChecker(), ticketResultRepository);
     }
 }

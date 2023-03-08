@@ -1,9 +1,8 @@
-package pl.lotto;
+package pl.lotto.infrastructre.controller.resultannouncer;
 
 
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.resultannouncer.ResultAnnouncerFacade;
-import pl.lotto.resultchecker.PlayerResultDto;
 
 @RestController
 public class AnnouncerController {

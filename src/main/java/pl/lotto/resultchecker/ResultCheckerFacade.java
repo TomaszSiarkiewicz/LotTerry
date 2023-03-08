@@ -1,16 +1,14 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.AnnouncerResponseDto;
+import pl.lotto.infrastructre.controller.resultannouncer.AnnouncerResponseDto;
 import pl.lotto.numbergenerator.DrawingResultDto;
 import pl.lotto.numbergenerator.NumberGeneratorFacade;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.Ticket;
 import pl.lotto.numberreceiver.TicketDto;
-import pl.lotto.resultannouncer.ResultAnnouncerFacade;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 public class ResultCheckerFacade {
@@ -18,15 +16,15 @@ public class ResultCheckerFacade {
     private final NumberGeneratorFacade numberGeneratorFacade;
     private final WinnerChecker winnerChecker;
     private final TicketResultRepository ticketResultRepository;
-    private final ResultAnnouncerFacade resultAnnouncerFacade;
+//    private final ResultAnnouncerFacade resultAnnouncerFacade;
 
 
-    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository, ResultAnnouncerFacade resultAnnouncerFacade) {
+    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository) {
         this.numberReceiverFacade = numberReceiverFacade;
         this.numberGeneratorFacade = numberGeneratorFacade;
         this.winnerChecker = winnerChecker;
         this.ticketResultRepository = ticketResultRepository;
-        this.resultAnnouncerFacade = resultAnnouncerFacade;
+//        this.resultAnnouncerFacade = resultAnnouncerFacade;
     }
 
     public List<TicketResult> getWinnersByDate(LocalDateTime date) {
@@ -52,7 +50,7 @@ public class ResultCheckerFacade {
         List<TicketResult> results = winnerChecker.getResults(drawingResultDto, ticketPlayed);
         if (!results.isEmpty()) {
             ticketResultRepository.saveAll(results);
-            resultAnnouncerFacade.invalidateCache();
+//            resultAnnouncerFacade.invalidateCache();
         }
     }
 }

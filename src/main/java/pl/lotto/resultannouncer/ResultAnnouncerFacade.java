@@ -1,8 +1,7 @@
 package pl.lotto.resultannouncer;
 
 import org.springframework.stereotype.Component;
-import pl.lotto.AnnouncerResponseDto;
-import pl.lotto.resultchecker.PlayerResultDto;
+import pl.lotto.infrastructre.controller.resultannouncer.AnnouncerResponseDto;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 
 import java.util.HashMap;
@@ -26,6 +25,7 @@ public class ResultAnnouncerFacade {
         return playerResult;
     }
 
+    // scheduler
     public void invalidateCache() {
         cache.clear();
     }
