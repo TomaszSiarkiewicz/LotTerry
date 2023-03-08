@@ -1,12 +1,11 @@
 package pl.lotto.numberreceiver;
 
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 public class NumberReceiverFacade {
 
     private final TicketDtoRepository repository;
@@ -51,5 +50,10 @@ public class NumberReceiverFacade {
 
     public List<Ticket> getPlayedTicketDtoForGivenDate(LocalDateTime date) {
         return repository.findAllByDrawDate(date);
+    }
+
+    public TicketDto findById(String id) {
+        Ticket ticket = repository.findById(id).orElseThrow(() -> new RuntimeException("ticket not found"));
+        return new TicketDto(ticket.lotteryId(), ticket.drawDate());
     }
 }

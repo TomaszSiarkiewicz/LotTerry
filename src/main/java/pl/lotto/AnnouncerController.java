@@ -14,7 +14,7 @@ public class AnnouncerController {
     }
 
     @GetMapping("/lottery")
-    PlayerResultDto result(@RequestParam("lotteryid") String lotteryid) {
+    AnnouncerResponseDto result(@RequestParam("lotteryid") String lotteryid) {
         return resultAnnouncerFacade.getTicketResultById(lotteryid);
     }
 
