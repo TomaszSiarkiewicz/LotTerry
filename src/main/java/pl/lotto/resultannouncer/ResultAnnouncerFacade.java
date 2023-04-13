@@ -25,7 +25,6 @@ public class ResultAnnouncerFacade {
         return playerResult;
     }
 
-    // scheduler
     public void invalidateCache() {
         cache.clear();
     }

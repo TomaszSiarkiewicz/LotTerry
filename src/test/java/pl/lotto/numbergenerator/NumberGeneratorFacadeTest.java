@@ -17,16 +17,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class NumberGeneratorFacadeTest {
-
+    WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
+    NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
+    NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
 
     @Test
     public void should_return_six_distinct_number_in_range_of_1_99() {
         //given
         LocalDateTime drawingDate = LocalDateTime.of(2023, 3, 22, 12, 0);
-        NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
+
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
-        WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         DrawingResultDto drawingResult = numberGeneratorFacade.generateNumbersAndSave();
         //then
@@ -38,12 +38,11 @@ public class NumberGeneratorFacadeTest {
     public void should_save_numbers_for_current_draw_date() {
         //given
         LocalDateTime drawingDate = LocalDateTime.of(2023, 3, 22, 12, 0);
-        NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         when(numberReceiverFacade.getNextDrawingDate()).thenReturn(drawingDate);
-        WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
-        NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
+
         //when
         DrawingResultDto drawingResult = numberGeneratorFacade.generateNumbersAndSave();
+
         //then
         DrawingResultDto resultDto = numberGeneratorFacade.retrieveNumbersByDate(drawingDate);
 
@@ -55,7 +54,6 @@ public class NumberGeneratorFacadeTest {
         //given
         AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 1, 1, 12, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
-        WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
         NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         DrawingResultDto firstDrawingResult = numberGeneratorFacade.generateNumbersAndSave();
@@ -69,7 +67,6 @@ public class NumberGeneratorFacadeTest {
         //given
         AdjustableClock clock = new AdjustableClock(LocalDateTime.of(2023, 1, 1, 12, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().numberReciverFacade(clock, new LotteryIdGeneratorTestImpl("defaultId"), new InMemoryTicketDtoDatabaseRepositoryImplementation());
-        WinningNumbersRepository winningNumbersRepository = new InMemoryWinningNumbersDatabaseImplementation();
         NumberGeneratorFacade numberGeneratorFacade = new NumberGeneratorFacadeConfiguration().numberGeneratorFacade(winningNumbersRepository, numberReceiverFacade);
         //when
         LocalDateTime firstDrawingDate = numberReceiverFacade.getNextDrawingDate();

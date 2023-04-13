@@ -1,6 +1,8 @@
 package pl.lotto.infrastructre.controller.resultannouncer;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lotto.resultannouncer.ResultAnnouncerFacade;
 
@@ -12,9 +14,15 @@ public class AnnouncerController {
         this.resultAnnouncerFacade = resultAnnouncerFacade;
     }
 
-    @GetMapping("/lottery")
-    AnnouncerResponseDto result(@RequestParam("lotteryid") String lotteryid) {
-        return resultAnnouncerFacade.getTicketResultById(lotteryid);
+    @GetMapping("/result/{lotteryId}")
+    ResponseEntity<AnnouncerResponseDto> result(@PathVariable String lotteryId) {
+        AnnouncerResponseDto ticketResultById = resultAnnouncerFacade.getTicketResultById(lotteryId);
+        if (ticketResultById.resultDto() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ticketResultById);
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ticketResultById);
     }
 
 }

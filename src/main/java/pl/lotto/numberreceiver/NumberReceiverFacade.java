@@ -5,31 +5,32 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import pl.lotto.numberreceiver.dto.InputNumbersResponseDto;
+import pl.lotto.numberreceiver.dto.TicketDto;
 
 public class NumberReceiverFacade {
 
     private final TicketDtoRepository repository;
     private final NextDrawDateCalculator drawDateCalculator;
     private final NumberValidator numberValidator;
-    private final LotteryIdGenerable lotteryIdGenerator;
 
-    NumberReceiverFacade(NextDrawDateCalculator drawDateCalculator, NumberValidator numberValidator, LotteryIdGenerable lotteryIdGenerator, TicketDtoRepository repository) {
+
+    NumberReceiverFacade(NextDrawDateCalculator drawDateCalculator, NumberValidator numberValidator , TicketDtoRepository repository) {
         this.drawDateCalculator = drawDateCalculator;
         this.numberValidator = numberValidator;
-        this.lotteryIdGenerator = lotteryIdGenerator;
         this.repository = repository;
     }
 
-    public InputNumbersResponse inputNumbers(List<Integer> numbersFromUser) {
+    public InputNumbersResponseDto inputNumbers(List<Integer> numbersFromUser) {
         ValidationResult validationResult = numberValidator.validate(numbersFromUser);
         if (validationResult.isValid()) {
-            LocalDateTime nextSaturday = drawDateCalculator.calculateNextDrawDate();
+            LocalDateTime nextDrawDate = drawDateCalculator.calculateNextDrawDate();
             String lotteryId = UUID.randomUUID().toString();
 
-            Ticket ticket = repository.save(new Ticket(lotteryId, nextSaturday, numbersFromUser));
-            return new InputNumbersResponse(new TicketDto(ticket.lotteryId(), ticket.drawDate()), validationResult.message());
+            Ticket ticket = repository.save(new Ticket(lotteryId, nextDrawDate, numbersFromUser));
+            return new InputNumbersResponseDto(new TicketDto(ticket.lotteryId(), ticket.drawDate()), validationResult.message());
         } else {
-            return new InputNumbersResponse(new TicketDto(null, LocalDateTime.now()), validationResult.message());
+            return new InputNumbersResponseDto(new TicketDto(null, LocalDateTime.now()), validationResult.message());
         }
     }
 
@@ -40,8 +41,6 @@ public class NumberReceiverFacade {
         return Optional.of(tickets.stream()
                 .map(ticket -> new TicketDto(ticket.lotteryId(), ticket.drawDate()))
                 .collect(Collectors.toList()));
-
-
     }
 
     public LocalDateTime getNextDrawingDate() {

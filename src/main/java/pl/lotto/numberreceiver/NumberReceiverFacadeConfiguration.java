@@ -11,7 +11,7 @@ public class NumberReceiverFacadeConfiguration {
     public NumberReceiverFacade numberReciverFacade(Clock clock, LotteryIdGenerable lotteryIdGenerator, TicketDtoRepository repository) {
         NextDrawDateCalculator nextDrawDateCalculator = new NextDrawDateCalculator(clock);
         NumberValidator numberValidator = new NumberValidator();
-        return new NumberReceiverFacade(nextDrawDateCalculator, numberValidator, lotteryIdGenerator, repository);
+        return new NumberReceiverFacade(nextDrawDateCalculator, numberValidator, repository);
     }
     @Bean
     LotteryIdGenerable lotteryIdGenerable(){

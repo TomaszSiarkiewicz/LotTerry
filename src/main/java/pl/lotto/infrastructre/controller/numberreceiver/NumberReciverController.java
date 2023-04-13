@@ -1,13 +1,14 @@
 package pl.lotto.infrastructre.controller.numberreceiver;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.lotto.numberreceiver.InputNumbersResponse;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
-
-import java.util.List;
+import pl.lotto.numberreceiver.dto.InputNumbersResponseDto;
+import pl.lotto.numberreceiver.dto.NumberInputRequestDto;
 
 @RestController
 public class NumberReciverController {
@@ -16,9 +17,12 @@ public class NumberReciverController {
     public NumberReciverController(NumberReceiverFacade numberReceiver) {
         this.numberReceiver = numberReceiver;
     }
-    @GetMapping("/newlottery/{numbers}")
-    InputNumbersResponse result(@PathVariable Integer[] numbers ) {
-        return numberReceiver.inputNumbers(List.of(numbers));
+
+    @PostMapping("/lottery")
+    ResponseEntity<InputNumbersResponseDto> result(@RequestBody NumberInputRequestDto requestDto) {
+        InputNumbersResponseDto response = numberReceiver.inputNumbers(requestDto.numbers());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(response);
     }
 
 }

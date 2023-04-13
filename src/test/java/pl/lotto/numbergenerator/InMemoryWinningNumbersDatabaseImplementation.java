@@ -27,7 +27,12 @@ public class InMemoryWinningNumbersDatabaseImplementation implements WinningNumb
 
     @Override
     public Optional<WinningNumbers> findByDate(LocalDateTime date) {
-        return Optional.of(drawingResultDatabase.get(date));
+        try {
+            WinningNumbers winningNumbers = drawingResultDatabase.get(date);
+            return Optional.of(winningNumbers);
+        } catch (NullPointerException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

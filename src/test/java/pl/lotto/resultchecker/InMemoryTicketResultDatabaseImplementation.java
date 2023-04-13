@@ -15,12 +15,6 @@ import java.util.stream.StreamSupport;
 public class InMemoryTicketResultDatabaseImplementation implements TicketResultRepository {
     Map<String, TicketResult> lottoResultDatabase = new HashMap<>();
 
-//    @Override
-//    public List<TicketResult> saveAll(Iterable<TicketResult>  results) {
-//        results.forEach(ticketResult -> lottoResultDatabase.put(ticketResult.ticketId(), ticketResult));
-//        return results;
-
-//    }
 @Override
 public <S extends TicketResult> List<S> saveAll(Iterable<S> entities) {
     Stream<S> stream = StreamSupport.stream(entities.spliterator(), false);
@@ -33,7 +27,7 @@ public <S extends TicketResult> List<S> saveAll(Iterable<S> entities) {
     public List<TicketResult> findWinnersByDrawDate(LocalDateTime date) {
         List<TicketResult> winners = new ArrayList<>();
         lottoResultDatabase.forEach((s, ticketResult) -> {
-            if (ticketResult.isWinner() && ticketResult.drawDate().equals(date)) winners.add(ticketResult);
+            if (ticketResult.drawDate().equals(date)) winners.add(ticketResult);
         });
         return winners;
     }
