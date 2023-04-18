@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
-import pl.lotto.numbergenerator.WinningNumbersNotFoundException;
+import pl.lotto.infrastructre.numbergeneratorclient.NumberGeneratorClientImpl;
 import pl.lotto.resultannouncer.ResultAnnouncerFacade;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 public class ResultCheckerScheduler {
     private final ResultCheckerFacade resultCheckerFacade;
     private final ResultAnnouncerFacade announcerFacade;
-    private final NumberGeneratorFacade numberGeneratorFacade;
+    private final NumberGeneratorClientImpl numberGeneratorFacade;
     private final Clock clock;
 
     @Scheduled(cron = "${lotto.result-checker.RunOccurrence}")

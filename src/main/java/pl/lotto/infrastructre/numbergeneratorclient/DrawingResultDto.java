@@ -1,4 +1,4 @@
-package pl.lotto.numbergenerator;
+package pl.lotto.infrastructre.numbergeneratorclient;
 
 import java.time.LocalDateTime;
 import java.util.List;

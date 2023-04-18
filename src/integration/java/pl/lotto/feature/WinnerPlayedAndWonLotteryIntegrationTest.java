@@ -20,8 +20,8 @@ import org.testcontainers.utility.DockerImageName;
 import pl.lotto.AdjustableClock;
 import pl.lotto.LottoApp;
 import pl.lotto.infrastructre.controller.resultannouncer.AnnouncerResponseDto;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
-import pl.lotto.numbergenerator.WinningNumbersNotFoundException;
+import pl.lotto.infrastructre.numbergeneratorclient.NumberGeneratorClientImpl;
+import pl.lotto.infrastructre.scheduler.resultchecker.WinningNumbersNotFoundException;
 import pl.lotto.numberreceiver.dto.InputNumbersResponseDto;
 import pl.lotto.resultchecker.ResultCheckerFacade;
 
@@ -47,7 +47,7 @@ public class WinnerPlayedAndWonLotteryIntegrationTest {
     public ObjectMapper objectMapper;
 
     @Autowired
-    NumberGeneratorFacade numberGeneratorFacade;
+    NumberGeneratorClientImpl numberGeneratorClient;
 
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
@@ -89,7 +89,7 @@ public class WinnerPlayedAndWonLotteryIntegrationTest {
                 .pollInterval(Duration.ofSeconds(1))
                 .atMost(Duration.ofSeconds(10)).until(() -> {
                     try {
-                        return !numberGeneratorFacade.retrieveNumbersByDate(drawDate).numbers().isEmpty();
+                        return !numberGeneratorClient.retrieveNumbersByDate(drawDate).numbers().isEmpty();
                     } catch (WinningNumbersNotFoundException e) {
                         return false;
                     }

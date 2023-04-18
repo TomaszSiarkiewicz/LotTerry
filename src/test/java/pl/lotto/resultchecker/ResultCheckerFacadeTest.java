@@ -4,8 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.lotto.AdjustableClock;
 import pl.lotto.infrastructre.controller.resultannouncer.AnnouncerResponseDto;
-import pl.lotto.numbergenerator.DrawingResultDto;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.infrastructre.numbergeneratorclient.DrawingResultDto;
+import pl.lotto.infrastructre.numbergeneratorclient.NumberGeneratorClient;
+import pl.lotto.infrastructre.numbergeneratorclient.NumberGeneratorClientImpl;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.Ticket;
 import pl.lotto.numberreceiver.dto.TicketDto;
@@ -25,11 +26,10 @@ import static org.mockito.Mockito.when;
 
 class ResultCheckerFacadeTest {
     InMemoryTicketResultDatabaseImplementation ticketResultRepository = new InMemoryTicketResultDatabaseImplementation();
-
+    NumberGeneratorClient numberGeneratorClient = mock(NumberGeneratorClientImpl.class);
     NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
-    NumberGeneratorFacade numberGeneratorFacade = mock(NumberGeneratorFacade.class);
     AdjustableClock clock =new AdjustableClock(LocalDateTime.of(2023, 3, 5, 10, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-    ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration().resultCheckerFacade(numberReceiverFacade, numberGeneratorFacade, ticketResultRepository,clock);
+    ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration().resultCheckerFacade(numberReceiverFacade, numberGeneratorClient, ticketResultRepository,clock);
     LocalDateTime date = LocalDateTime.of(2022, 12, 1, 12, 0, 0);
 
     @BeforeEach
@@ -42,11 +42,11 @@ class ResultCheckerFacadeTest {
         //given
         Ticket winningTicket = new Ticket("id1", date, List.of(1, 2, 3, 4, 5, 6));
         Ticket loosingTicket = new Ticket("id2", date, List.of(32, 2, 1, 15, 16, 17));
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(date)).thenReturn(List.of(winningTicket, loosingTicket));
 
-        TicketResult givenWinner1 = new TicketResult(winningTicket.lotteryId(), winningTicket.numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
-        TicketResult givenlooser1 = new TicketResult(loosingTicket.lotteryId(), loosingTicket.numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, false);
+        TicketResult givenWinner1 = new TicketResult(winningTicket.lotteryId(), winningTicket.numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenlooser1 = new TicketResult(loosingTicket.lotteryId(), loosingTicket.numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, false);
 
         //when
         resultCheckerFacade.calculateWinners(date);
@@ -66,7 +66,7 @@ class ResultCheckerFacadeTest {
         Ticket loosingTicket1 = new Ticket("id1", date, List.of(14, 23, 34, 45, 5, 6));
         Ticket loosingTicket2 = new Ticket("id2", date, List.of(32, 2, 1, 15, 16, 17));
 
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(date)).thenReturn(List.of(loosingTicket1, loosingTicket2));
 
         //when
@@ -88,13 +88,13 @@ class ResultCheckerFacadeTest {
         Ticket winningTicket2 = new Ticket("id2", date, List.of(1, 2, 3, 4, 5, 6));
         Ticket loosingTicket = new Ticket("id3", date, List.of(32, 2, 1, 15, 16, 17));
 
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(date)).thenReturn(List.of(winningTicket, loosingTicket, winningTicket2));
         //when
         resultCheckerFacade.calculateWinners(date);
 
-        TicketResult givenWinner = new TicketResult(winningTicket.lotteryId(), winningTicket.numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
-        TicketResult givenWinner2 = new TicketResult(winningTicket2.lotteryId(), winningTicket2.numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner = new TicketResult(winningTicket.lotteryId(), winningTicket.numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner2 = new TicketResult(winningTicket2.lotteryId(), winningTicket2.numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
         //then
         assertThat(resultCheckerFacade.getWinnersByDate(date).size()).isEqualTo(3);
         assertThat(resultCheckerFacade.getWinnersByDate(date)).contains(givenWinner, givenWinner2);
@@ -104,7 +104,7 @@ class ResultCheckerFacadeTest {
     public void should_return_lottoResult_by_ticket_id_when_winner() {
         //given
         Ticket winningTicket = new Ticket("id1", date, List.of(1, 2, 3, 4, 5, 6));
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(date)).thenReturn(List.of(winningTicket));
         when(numberReceiverFacade.findById(anyString())).thenReturn(new TicketDto("id1", date));
         resultCheckerFacade.calculateWinners(date);
@@ -120,7 +120,7 @@ class ResultCheckerFacadeTest {
     public void should_return_lottoResult_by_ticket_id_when_looser() {
         //given
         Ticket looserTicket = new Ticket("id1", date, List.of(12, 11, 31, 41, 5, 6));
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6)));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(date)).thenReturn(List.of(looserTicket));
         when(numberReceiverFacade.findById(anyString())).thenReturn(new TicketDto("id1", date));
         resultCheckerFacade.calculateWinners(date);
@@ -156,13 +156,13 @@ class ResultCheckerFacadeTest {
 
 
 
-        when(numberGeneratorFacade.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, drawingResults));
+        when(numberGeneratorClient.retrieveNumbersByDate(date)).thenReturn(new DrawingResultDto(date, drawingResults));
         when(numberReceiverFacade.getPlayedTicketDtoForGivenDate(any())).thenReturn(playedTickets);
 
-        TicketResult givenWinner1 = new TicketResult(playedTickets.get(2).lotteryId(), playedTickets.get(2).numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
-        TicketResult givenWinner2 = new TicketResult(playedTickets.get(3).lotteryId(), playedTickets.get(3).numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
-        TicketResult givenWinner3 = new TicketResult(playedTickets.get(4).lotteryId(), playedTickets.get(4).numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
-        TicketResult givenWinner4 = new TicketResult(playedTickets.get(5).lotteryId(), playedTickets.get(5).numbers(), numberGeneratorFacade.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner1 = new TicketResult(playedTickets.get(2).lotteryId(), playedTickets.get(2).numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner2 = new TicketResult(playedTickets.get(3).lotteryId(), playedTickets.get(3).numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner3 = new TicketResult(playedTickets.get(4).lotteryId(), playedTickets.get(4).numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
+        TicketResult givenWinner4 = new TicketResult(playedTickets.get(5).lotteryId(), playedTickets.get(5).numbers(), numberGeneratorClient.retrieveNumbersByDate(date).numbers(), date, true);
 
         //when
         resultCheckerFacade.calculateWinners(date);

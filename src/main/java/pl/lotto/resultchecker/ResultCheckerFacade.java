@@ -1,8 +1,8 @@
 package pl.lotto.resultchecker;
 
 import pl.lotto.infrastructre.controller.resultannouncer.AnnouncerResponseDto;
-import pl.lotto.numbergenerator.DrawingResultDto;
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
+import pl.lotto.infrastructre.numbergeneratorclient.DrawingResultDto;
+import pl.lotto.infrastructre.numbergeneratorclient.NumberGeneratorClient;
 import pl.lotto.numberreceiver.NumberReceiverFacade;
 import pl.lotto.numberreceiver.Ticket;
 
@@ -13,15 +13,15 @@ import java.util.List;
 
 public class ResultCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
-    private final NumberGeneratorFacade numberGeneratorFacade;
+    private final NumberGeneratorClient numberGeneratorClient;
     private final WinnerChecker winnerChecker;
     private final TicketResultRepository ticketResultRepository;
     private final Clock clock;
 
 
-    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorFacade numberGeneratorFacade, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository, Clock clock) {
+    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorClient numberGeneratorClient, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository, Clock clock) {
         this.numberReceiverFacade = numberReceiverFacade;
-        this.numberGeneratorFacade = numberGeneratorFacade;
+        this.numberGeneratorClient = numberGeneratorClient;
         this.winnerChecker = winnerChecker;
         this.ticketResultRepository = ticketResultRepository;
         this.clock = clock;
@@ -55,7 +55,7 @@ public class ResultCheckerFacade {
     }
 
     public void calculateWinners(LocalDateTime date) {
-        DrawingResultDto drawingResultDto = numberGeneratorFacade.retrieveNumbersByDate(date);
+        DrawingResultDto drawingResultDto = numberGeneratorClient.retrieveNumbersByDate(date);
         List<Ticket> ticketPlayed = numberReceiverFacade.getPlayedTicketDtoForGivenDate(date);
         List<TicketResult> results = winnerChecker.getResults(drawingResultDto, ticketPlayed);
         if (!results.isEmpty()) {

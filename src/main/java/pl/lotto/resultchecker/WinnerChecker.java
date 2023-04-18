@@ -1,6 +1,6 @@
 package pl.lotto.resultchecker;
 
-import pl.lotto.numbergenerator.DrawingResultDto;
+import pl.lotto.infrastructre.numbergeneratorclient.DrawingResultDto;
 import pl.lotto.numberreceiver.Ticket;
 
 import java.util.ArrayList;
