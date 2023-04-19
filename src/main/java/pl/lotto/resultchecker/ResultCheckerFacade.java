@@ -13,15 +13,13 @@ import java.util.List;
 
 public class ResultCheckerFacade {
     private final NumberReceiverFacade numberReceiverFacade;
-    private final NumberGeneratorClient numberGeneratorClient;
     private final WinnerChecker winnerChecker;
     private final TicketResultRepository ticketResultRepository;
     private final Clock clock;
 
 
-    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorClient numberGeneratorClient, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository, Clock clock) {
+    ResultCheckerFacade(NumberReceiverFacade numberReceiverFacade, WinnerChecker winnerChecker, TicketResultRepository ticketResultRepository, Clock clock) {
         this.numberReceiverFacade = numberReceiverFacade;
-        this.numberGeneratorClient = numberGeneratorClient;
         this.winnerChecker = winnerChecker;
         this.ticketResultRepository = ticketResultRepository;
         this.clock = clock;

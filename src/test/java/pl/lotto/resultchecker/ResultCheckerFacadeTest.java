@@ -31,9 +31,8 @@ class ResultCheckerFacadeTest {
     AdjustableClock clock =new AdjustableClock(LocalDateTime.of(2023, 3, 5, 10, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
     ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration().resultCheckerFacade(numberReceiverFacade, numberGeneratorClient, ticketResultRepository,clock);
     LocalDateTime date = LocalDateTime.of(2022, 12, 1, 12, 0, 0);
-
-    //Todo fix null
     DrawingResultDto drawingResultDto = new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6));
+
     @BeforeEach
     public void cleanUp() {
         ticketResultRepository.deleteAll();
