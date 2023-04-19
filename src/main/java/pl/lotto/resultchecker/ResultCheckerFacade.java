@@ -54,9 +54,8 @@ public class ResultCheckerFacade {
         return getWinnersByDate(drawDate).isEmpty();
     }
 
-    public void calculateWinners(LocalDateTime date) {
-        DrawingResultDto drawingResultDto = numberGeneratorClient.retrieveNumbersByDate(date);
-        List<Ticket> ticketPlayed = numberReceiverFacade.getPlayedTicketDtoForGivenDate(date);
+    public void calculateWinners( DrawingResultDto drawingResultDto) {
+        List<Ticket> ticketPlayed = numberReceiverFacade.getPlayedTicketDtoForGivenDate(drawingResultDto.date());
         List<TicketResult> results = winnerChecker.getResults(drawingResultDto, ticketPlayed);
         if (!results.isEmpty()) {
             ticketResultRepository.saveAll(results);
