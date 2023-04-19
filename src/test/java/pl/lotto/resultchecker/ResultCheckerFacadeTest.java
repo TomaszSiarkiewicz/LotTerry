@@ -29,7 +29,7 @@ class ResultCheckerFacadeTest {
     NumberGeneratorClient numberGeneratorClient = mock(NumberGeneratorClientImpl.class);
     NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
     AdjustableClock clock =new AdjustableClock(LocalDateTime.of(2023, 3, 5, 10, 0).toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
-    ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration().resultCheckerFacade(numberReceiverFacade, numberGeneratorClient, ticketResultRepository,clock);
+    ResultCheckerFacade resultCheckerFacade = new ResultCheckerConfiguration().resultCheckerFacade(numberReceiverFacade, ticketResultRepository,clock);
     LocalDateTime date = LocalDateTime.of(2022, 12, 1, 12, 0, 0);
     DrawingResultDto drawingResultDto = new DrawingResultDto(date, List.of(1, 2, 3, 4, 5, 6));
 

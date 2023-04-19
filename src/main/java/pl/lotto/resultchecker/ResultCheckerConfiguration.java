@@ -10,7 +10,7 @@ import java.time.Clock;
 @Configuration
 public class ResultCheckerConfiguration {
     @Bean
-    public ResultCheckerFacade resultCheckerFacade(NumberReceiverFacade numberReceiverFacade, NumberGeneratorClient numberGeneratorClient, TicketResultRepository ticketResultRepository, Clock clock) {
-        return new ResultCheckerFacade(numberReceiverFacade, numberGeneratorClient, new WinnerChecker(), ticketResultRepository, clock);
+    public ResultCheckerFacade resultCheckerFacade(NumberReceiverFacade numberReceiverFacade, TicketResultRepository ticketResultRepository, Clock clock) {
+        return new ResultCheckerFacade(numberReceiverFacade, new WinnerChecker(), ticketResultRepository, clock);
     }
 }
