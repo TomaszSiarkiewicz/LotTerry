@@ -45,30 +45,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("integration")
 public class WinnerPlayedAndWonLotteryIntegrationTest {
 
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    public ObjectMapper objectMapper;
+    @Autowired
+    NumberGeneratorClientImpl numberGeneratorClient;
+    @Autowired
+    ResultCheckerFacade resultCheckerFacade;
+    @Autowired
+    AdjustableClock clock;
+
+    public static final String WIRE_MOCK_HOST = "http://localhost";
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
             .options(wireMockConfig().dynamicPort())
             .build();
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    public ObjectMapper objectMapper;
-
-    @Autowired
-    NumberGeneratorClientImpl numberGeneratorClient;
-
-    @Autowired
-    ResultCheckerFacade resultCheckerFacade;
-
-    @Autowired
-    AdjustableClock clock;
-
     @Container
     public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
-
-    public static final String WIRE_MOCK_HOST = "http://localhost";
 
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
@@ -78,8 +73,8 @@ public class WinnerPlayedAndWonLotteryIntegrationTest {
 
     @Test
     public void should_user_play_and_check_winning_result() throws Exception {
-        // step 0: generating number service will response
-        //
+        // step 0: generating number service
+
         wireMockServer.stubFor(WireMock.get(urlEqualTo("/winnum/2023-04-08T12%3A00%3A00"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())
